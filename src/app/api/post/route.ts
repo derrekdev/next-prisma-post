@@ -13,11 +13,12 @@ export async function GET(req: NextRequest) {
 
 type postProps = {
   title: string;
+  content?: string;
 };
 
 export async function POST(req: NextRequest) {
   try {
-    const post: any = await req.json();
+    const post: postProps = await req.json();
 
     if (post.title === "") {
       return new NextResponse(
@@ -36,4 +37,8 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     return new NextResponse(JSON.stringify({ error: error }));
   }
+}
+
+export async function PUT(req: NextRequest) {
+  return new NextResponse(JSON.stringify({ message: "published" }));
 }

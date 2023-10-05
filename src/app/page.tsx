@@ -1,6 +1,6 @@
 async function getPost() {
   const res = await fetch(`${process.env.BASE_URL}/api/post`, {
-    cache: "no-store",
+    next: { revalidate: 60 },
   });
 
   // fetch(URL, { cache: 'no-store' })
