@@ -19,9 +19,6 @@ export async function POST(req: NextRequest) {
   try {
     const post: any = await req.json();
 
-    console.log("post");
-    console.log(post.title);
-
     if (post.title === "") {
       return new NextResponse(
         JSON.stringify({ message: "Don't leave this empty" })
@@ -31,6 +28,7 @@ export async function POST(req: NextRequest) {
     const data = await prisma.post.create({
       data: {
         title: post.title,
+        content: post?.content,
       },
     });
 

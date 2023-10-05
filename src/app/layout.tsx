@@ -1,3 +1,4 @@
+import TopMenu from "@/components/TopMenu/TopMenu";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -16,7 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className}  py-8 px-48`}>{children}</body>
+      <body className={`${inter.className}  py-8 px-48`}>
+        <TopMenu />
+        {children}
+      </body>
     </html>
   );
 }

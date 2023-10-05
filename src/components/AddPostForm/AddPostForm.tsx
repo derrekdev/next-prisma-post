@@ -1,17 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const AddPostForm = () => {
-  const [title, setTitle] = useState("");
+  // const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const refTitle = useRef<HTMLInputElement | null>(null);
+  const refMessage = useRef<HTMLTextAreaElement | null>(null);
 
   async function submitPost(e: React.FormEvent) {
     e.preventDefault();
+    console.log("test", refTitle.current?.value);
 
     const data = await fetch("/api/post", {
       method: "POST",
-      body: JSON.stringify({ title }),
+      body: JSON.stringify({
+        title: refTitle.current?.value,
+        content: refMessage.current?.value,
+      }),
     });
 
     const res = await data.json();
@@ -23,7 +29,7 @@ const AddPostForm = () => {
     <form onSubmit={submitPost} className="flex flex-col w-1/3">
       <div className="py-4">
         {message && (
-          <p className="bg-green-60 p-5 rounded-md capitalize">{message}</p>
+          <p className="bg-green-600 p-5 rounded-md capitalize">{message}!!</p>
         )}
       </div>
 
@@ -33,17 +39,23 @@ const AddPostForm = () => {
         </label>
         <input
           type="text"
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
+          // onChange={(e) => setTitle(e.target.value)}
+          ref={refTitle}
+          defaultValue={refTitle.current?.value || ""}
           className="text-black p-2 rounded-md"
           id="title"
         />
       </div>
       <div className="flex flex-col gap-2 pb-6">
-        <label htmlFor="title" className="">
+        <label htmlFor="content" className="">
           Content
         </label>
-        <textarea></textarea>
+        <textarea
+          ref={refMessage}
+          id="content"
+          className="text-black p-2 rounded-md"
+          rows={4}
+        ></textarea>
       </div>
       <div className="py-4 ">
         <button type="submit" className="p-4 bg-gray-600 rounded-md w-1/2">
