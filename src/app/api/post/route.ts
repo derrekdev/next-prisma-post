@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function PUT(req: NextRequest) {
+export async function PATCH(req: NextRequest) {
   const url = new URL(req.url);
   const publishedQuery = url.searchParams.get("type");
   const post: postProps = await req.json();
@@ -69,6 +69,4 @@ export async function PUT(req: NextRequest) {
   } catch (error) {
     return new NextResponse(JSON.stringify({ error: error }));
   }
-
-  // return new NextResponse(JSON.stringify({ message: "update test" }));
 }

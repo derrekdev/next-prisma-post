@@ -1,10 +1,10 @@
-import AddPostForm from "@/components/AddPostForm/AddPostForm";
+import PostForm from "@/components/PostForm/PostForm";
 
 const page = () => {
   return (
     <div>
       <h1>Create Post</h1>
-      <AddPostForm />
+      <PostForm />
     </div>
   );
 };

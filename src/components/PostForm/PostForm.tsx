@@ -1,9 +1,10 @@
 "use client";
 
+import { postProps } from "@/Types/types";
 import { useRef, useState } from "react";
 
-const AddPostForm = () => {
-  // const [title, setTitle] = useState("");
+const PostForm = ({ postData }: { postData?: postProps }) => {
+  const isUpdate = !!postData ? true : false;
   const [message, setMessage] = useState("");
   const refTitle = useRef<HTMLInputElement | null>(null);
   const refMessage = useRef<HTMLTextAreaElement | null>(null);
@@ -13,14 +14,23 @@ const AddPostForm = () => {
     e.preventDefault();
     console.log("test", refTitle.current?.value);
 
-    const data = await fetch("/api/post", {
-      method: "POST",
-      body: JSON.stringify({
-        title: refTitle.current?.value,
-        content: refMessage.current?.value,
-        published: refPublished.current?.checked,
-      }),
-    });
+    const data = !isUpdate
+      ? await fetch("/api/post", {
+          method: "POST",
+          body: JSON.stringify({
+            title: refTitle.current?.value,
+            content: refMessage.current?.value,
+            published: refPublished.current?.checked,
+          }),
+        })
+      : await fetch(`/api/post/${postData?.id}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            title: refTitle.current?.value,
+            content: refMessage.current?.value,
+            published: refPublished.current?.checked,
+          }),
+        });
 
     const res = await data.json();
     if (!res) console.log(res);
@@ -43,7 +53,7 @@ const AddPostForm = () => {
           type="text"
           // onChange={(e) => setTitle(e.target.value)}
           ref={refTitle}
-          defaultValue={refTitle.current?.value || ""}
+          defaultValue={isUpdate ? postData?.title : refTitle.current?.value}
           className="text-black p-2 rounded-md"
           id="title"
         />
@@ -57,6 +67,9 @@ const AddPostForm = () => {
           id="content"
           className="text-black p-2 rounded-md"
           rows={4}
+          defaultValue={
+            isUpdate ? postData?.content : refMessage.current?.value
+          }
         ></textarea>
       </div>
       <div className="flex flex-row gap-4 pb-6">
@@ -67,6 +80,9 @@ const AddPostForm = () => {
           // defaultValue={refTitle.current?.value || ""}
           className="text-black w-6 h-6 rounded-md"
           id="published"
+          defaultChecked={
+            isUpdate ? postData?.published : refPublished.current?.checked
+          }
         />
         <label htmlFor="published" className="">
           Published
@@ -74,11 +90,11 @@ const AddPostForm = () => {
       </div>
       <div className="py-4 ">
         <button type="submit" className="p-4 bg-gray-600 rounded-md w-1/2">
-          Create
+          {isUpdate ? "Update" : "Create"}
         </button>
       </div>
     </form>
   );
 };
 
-export default AddPostForm;
+export default PostForm;

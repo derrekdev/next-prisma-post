@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const publishedData = async (postId: number, isPublished: boolean) => {
   const res = await fetch(`/api/post?type=published`, {
-    method: "PUT",
+    method: "PATCH",
     body: JSON.stringify({
       id: postId,
       published: !isPublished,
@@ -89,7 +89,10 @@ const ShowPostList = ({
                 >
                   {post.published ? "Unpublished" : "Published"}
                 </button>
-                <Link className="p-4 bg-sky-500 rounded-lg" href="/">
+                <Link
+                  className="p-4 bg-sky-500 rounded-lg"
+                  href={`/create-post/${post.id}`}
+                >
                   Update
                 </Link>
                 <button
