@@ -3,7 +3,13 @@ import prisma from "../../../../prisma/client";
 
 export async function GET(req: NextRequest) {
   try {
-    const data = await prisma.post.findMany();
+    const data = await prisma.post.findMany({
+      orderBy: [
+        {
+          id: "asc",
+        },
+      ],
+    });
 
     return new NextResponse(JSON.stringify(data));
   } catch (error) {
@@ -12,8 +18,10 @@ export async function GET(req: NextRequest) {
 }
 
 type postProps = {
+  id?: number;
   title: string;
   content?: string;
+  published?: boolean;
 };
 
 export async function POST(req: NextRequest) {
@@ -30,6 +38,7 @@ export async function POST(req: NextRequest) {
       data: {
         title: post.title,
         content: post?.content,
+        published: post?.published,
       },
     });
 
@@ -40,5 +49,26 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-  return new NextResponse(JSON.stringify({ message: "published" }));
+  const url = new URL(req.url);
+  const publishedQuery = url.searchParams.get("type");
+  const post: postProps = await req.json();
+
+  try {
+    if (publishedQuery === "published") {
+      const data = await prisma.post.update({
+        where: {
+          id: post.id,
+        },
+        data: {
+          published: post.published,
+        },
+      });
+
+      return new NextResponse(JSON.stringify(data));
+    }
+  } catch (error) {
+    return new NextResponse(JSON.stringify({ error: error }));
+  }
+
+  // return new NextResponse(JSON.stringify({ message: "update test" }));
 }

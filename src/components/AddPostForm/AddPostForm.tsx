@@ -7,6 +7,7 @@ const AddPostForm = () => {
   const [message, setMessage] = useState("");
   const refTitle = useRef<HTMLInputElement | null>(null);
   const refMessage = useRef<HTMLTextAreaElement | null>(null);
+  const refPublished = useRef<HTMLInputElement | null>(null);
 
   async function submitPost(e: React.FormEvent) {
     e.preventDefault();
@@ -17,6 +18,7 @@ const AddPostForm = () => {
       body: JSON.stringify({
         title: refTitle.current?.value,
         content: refMessage.current?.value,
+        published: refPublished.current?.checked,
       }),
     });
 
@@ -56,6 +58,19 @@ const AddPostForm = () => {
           className="text-black p-2 rounded-md"
           rows={4}
         ></textarea>
+      </div>
+      <div className="flex flex-row gap-4 pb-6">
+        <input
+          type="checkbox"
+          // onChange={(e) => setTitle(e.target.value)}
+          ref={refPublished}
+          // defaultValue={refTitle.current?.value || ""}
+          className="text-black w-6 h-6 rounded-md"
+          id="published"
+        />
+        <label htmlFor="published" className="">
+          Published
+        </label>
       </div>
       <div className="py-4 ">
         <button type="submit" className="p-4 bg-gray-600 rounded-md w-1/2">

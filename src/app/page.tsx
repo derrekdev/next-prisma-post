@@ -1,6 +1,9 @@
+import ShowPost from "@/components/ShowPostList/ShowPostList";
+
 async function getPost() {
-  const res = await fetch(`${process.env.BASE_URL}/api/post`, {
-    next: { revalidate: 60 },
+  const res = await fetch(`${process.env.BASE_URL}/api/posts`, {
+    cache: "no-store",
+    next: { revalidate: 5 },
   });
 
   // fetch(URL, { cache: 'no-store' })
@@ -20,23 +23,10 @@ async function getPost() {
 export default async function Home() {
   const data: { id: number; title: string }[] = await getPost();
 
-  console.log(data);
-
   return (
     <main>
-      {data.map((post) => (
-        <h1 className="text-lg py-6" key={post.id}>
-          {post.title}
-        </h1>
-      ))}
+      <h1 className="text-4xl">Dashboard</h1>
+      <ShowPost data={data} />
     </main>
   );
 }
-
-// export async function getStaticProps() {
-//   const data: { id: number; title: string }[] = await getPost();
-
-//   return {
-//     props: { data },
-//   };
-// }
