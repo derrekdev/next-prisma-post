@@ -12,7 +12,6 @@ const PostForm = ({ postData }: { postData?: postProps }) => {
 
   async function submitPost(e: React.FormEvent) {
     e.preventDefault();
-    console.log("test", refTitle.current?.value);
 
     const data = !isUpdate
       ? await fetch("/api/post", {
@@ -34,7 +33,7 @@ const PostForm = ({ postData }: { postData?: postProps }) => {
 
     const res = await data.json();
     if (!res) console.log(res);
-    else setMessage("success");
+    else setMessage(`Successfuly ${isUpdate ? "updated" : "added"}`);
   }
 
   return (

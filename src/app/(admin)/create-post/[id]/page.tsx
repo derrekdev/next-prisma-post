@@ -13,7 +13,6 @@ async function getPost(id: string) {
 
 const page = async ({ params }: { params: { id: string } }) => {
   const data = await getPost(params.id);
-  console.log("data", data);
 
   return (
     <div>

@@ -4,3 +4,8 @@ export type postProps = {
   content?: string;
   published: boolean;
 };
+
+export type tagProps = {
+  id?: number;
+  tagName: string;
+};

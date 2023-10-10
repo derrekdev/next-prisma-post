@@ -28,6 +28,23 @@ const TopMenu = () => {
             Create Post
           </Link>
         </li>
+        <li>
+          <Link
+            className="bg-teal-500 text-black font-medium py-2 px-4 rounded-md"
+            href="/tags"
+          >
+            View Tags
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            className="bg-teal-500 text-black font-medium py-2 px-4 rounded-md"
+            href="/create-tag"
+          >
+            Create Tags
+          </Link>
+        </li>
       </ul>
     </nav>
   );

@@ -1,3 +1,4 @@
+import { postProps } from "@/Types/types";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../prisma/client";
 
@@ -16,13 +17,6 @@ export async function GET(req: NextRequest) {
     return new NextResponse(JSON.stringify({ error: error }));
   }
 }
-
-type postProps = {
-  id?: number;
-  title: string;
-  content?: string;
-  published?: boolean;
-};
 
 export async function POST(req: NextRequest) {
   try {
