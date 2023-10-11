@@ -10,33 +10,32 @@ export default function AuthorForm({
 }) {
   const isUpdate = !!authorData ? true : false;
 
-  const refTagName = useRef<HTMLInputElement | null>(null);
+  const refAuthorName = useRef<HTMLInputElement | null>(null);
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("trigger author submit");
 
     // console.log("tagName", refTagName.current?.value);
 
-    const data = !isUpdate;
-    //   ? await fetch("/api/tag", {
-    //       method: "POST",
-    //       body: JSON.stringify({
-    //         tagName: refTagName.current?.value,
-    //       }),
-    //     })
-    //   : await fetch(`/api/tag/${tagData?.id}`, {
-    //       method: "PUT",
-    //       body: JSON.stringify({
-    //         tagName: refTagName.current?.value,
-    //       }),
-    //     });
+    const data = !isUpdate
+      ? await fetch("/api/author", {
+          method: "POST",
+          body: JSON.stringify({
+            name: refAuthorName.current?.value,
+          }),
+        })
+      : await fetch(`/api/author/${authorData?.id}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            name: refAuthorName.current?.value,
+          }),
+        });
 
-    // const res = await data.json();
+    const res = await data.json();
 
-    // if (!res) console.log(res);
-    // else setMessage(`Successfuly ${isUpdate ? "updated" : "added"}`);
+    if (!res) console.log(res);
+    else setMessage(`Successfuly ${isUpdate ? "updated" : "added"}`);
   };
 
   return (
@@ -53,8 +52,10 @@ export default function AuthorForm({
         <input
           type="text"
           // onChange={(e) => setTitle(e.target.value)}
-          ref={refTagName}
-          defaultValue={isUpdate ? authorData?.name : refTagName.current?.value}
+          ref={refAuthorName}
+          defaultValue={
+            isUpdate ? authorData?.name : refAuthorName.current?.value
+          }
           className="text-black p-2 rounded-md"
           id="name"
         />
