@@ -45,6 +45,23 @@ const TopMenu = () => {
             Create Tags
           </Link>
         </li>
+        <li>
+          <Link
+            className="bg-teal-500 text-black font-medium py-2 px-4 rounded-md"
+            href="/author"
+          >
+            View Author
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            className="bg-teal-500 text-black font-medium py-2 px-4 rounded-md"
+            href="/create-author"
+          >
+            Create Author
+          </Link>
+        </li>
       </ul>
     </nav>
   );

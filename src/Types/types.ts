@@ -9,3 +9,8 @@ export type tagProps = {
   id?: number;
   tagName: string;
 };
+
+export type authorProps = {
+  id?: number;
+  name: string;
+};
