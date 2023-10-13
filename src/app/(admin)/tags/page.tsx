@@ -15,7 +15,7 @@ async function getTags() {
 }
 
 export default async function page() {
-  const data: Array<tagProps> = await getTags();
+  const data: tagProps[] = await getTags();
 
   return (
     <div>

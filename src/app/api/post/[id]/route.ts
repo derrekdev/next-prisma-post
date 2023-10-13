@@ -9,6 +9,13 @@ export async function GET(
     const postId = parseInt(params.id);
 
     const data = await prisma.post.findUnique({
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        published: true,
+        Author: true,
+      },
       where: {
         id: postId,
       },
@@ -33,13 +40,11 @@ export async function PUT(
         title: post.title,
         content: post?.content,
         published: post?.published,
-        // authorId: post?.authorId,
-        // Author: {
-        //   connect: {
-        //     id: post?.authorId,
-        //   },
-        // },
-        // authorId: post?.authorId,
+        Author: {
+          connect: {
+            id: post.authorId,
+          },
+        },
       },
       where: {
         id: postId,

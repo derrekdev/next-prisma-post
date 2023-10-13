@@ -44,10 +44,12 @@ export default function ShowAuthorList({
     <ul>
       {!!authorData &&
         authorData.length > 0 &&
-        authorData.map((author) => (
+        authorData.map((author, index) => (
           <li
             key={author.id}
-            className="flex flex-row justify-between py-6 w-full"
+            className={`flex flex-row justify-between items-center p-6 w-full ${
+              index % 2 ? "bg-neutral-900" : ""
+            }`}
           >
             <span>{author.name}</span>
             <div className="pl-4 flex flex-row gap-2">

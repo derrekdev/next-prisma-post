@@ -68,10 +68,13 @@ const ShowPostList = ({
   return (
     <ul className="w-4/5">
       {!!currentData &&
-        currentData?.map((post) => (
+        currentData.length > 0 &&
+        currentData?.map((post, index) => (
           <li
             key={post.id}
-            className="flex flex-row justify-between items-center py-6 w-full"
+            className={`flex flex-row justify-between items-center p-6 w-full ${
+              index % 2 ? "bg-neutral-900" : ""
+            }`}
           >
             <Link href={`/post/${post.id}`}>
               <h2 className="text-lg ">{post.title}</h2>

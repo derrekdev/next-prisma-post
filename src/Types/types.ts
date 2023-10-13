@@ -5,6 +5,8 @@ export type postProps = {
   published: boolean;
   authorId?: number;
   Author?: authorProps;
+  tagIds?: number[];
+  Tags?: tagProps;
 };
 
 export type tagProps = {

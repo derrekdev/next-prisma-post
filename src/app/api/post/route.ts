@@ -5,9 +5,6 @@ import prisma from "../../../../prisma/client";
 export async function GET(req: NextRequest) {
   try {
     const data = await prisma.post.findMany({
-      // include: {
-      //   Author: true,
-      // },
       select: {
         id: true,
         title: true,
@@ -21,8 +18,6 @@ export async function GET(req: NextRequest) {
         },
       ],
     });
-
-    console.log("prisma data", data);
 
     return new NextResponse(JSON.stringify(data));
   } catch (error) {
@@ -40,6 +35,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // console.log("post test", post, post.tagIds);
+
     const data = await prisma.post.create({
       data: {
         title: post.title,
@@ -50,12 +47,12 @@ export async function POST(req: NextRequest) {
             id: post.authorId,
           },
         },
-        // authorId: post.authorId,
       },
     });
 
-    console.log("data", data);
+    // console.log("data", data);
 
+    // return new NextResponse(JSON.stringify({ message: "test only" }));
     return new NextResponse(JSON.stringify(data));
   } catch (error) {
     return new NextResponse(JSON.stringify({ error: error }));

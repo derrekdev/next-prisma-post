@@ -19,9 +19,12 @@ const PostForm = ({
   const refPublished = useRef<HTMLInputElement | null>(null);
   const refTags = useRef<HTMLInputElement | null>(null);
   const refAuthor = useRef<HTMLSelectElement | null>(null);
+  const [tagsSelected, setTagsSelected] = useState<number[]>([]);
 
   async function submitPost(e: React.FormEvent) {
     e.preventDefault();
+
+    console.log(refTags);
 
     const data = !isUpdate
       ? await fetch("/api/post", {
@@ -31,6 +34,7 @@ const PostForm = ({
             content: refMessage.current?.value,
             published: refPublished.current?.checked,
             authorId: parseInt(refAuthor.current?.value!),
+            tagIds: tagsSelected,
           }),
         })
       : await fetch(`/api/post/${postData?.id}`, {
@@ -39,7 +43,8 @@ const PostForm = ({
             title: refTitle.current?.value,
             content: refMessage.current?.value,
             published: refPublished.current?.checked,
-            authorId: refAuthor.current?.value,
+            authorId: parseInt(refAuthor.current?.value!),
+            tagIds: tagsSelected,
           }),
         });
 
@@ -47,6 +52,34 @@ const PostForm = ({
     if (!res.ok) console.log(res);
     else setMessage(`Successfuly ${isUpdate ? "updated" : "added"}`);
   }
+
+  const handleTagsChange = (tagValue: string) => {
+    const currentTagValue = tagValue ? parseInt(tagValue) : 0;
+
+    console.log("selected tag", tagValue, currentTagValue);
+
+    // tagsSelected
+
+    const isTagExist = tagsSelected.find((tag) => tag === currentTagValue);
+
+    if (!isTagExist) {
+      setTagsSelected((tags) => {
+        return [...tags, currentTagValue];
+      });
+    } else {
+      setTagsSelected((tags) => {
+        return tags.filter((tag) => tag !== currentTagValue);
+      });
+    }
+  };
+
+  const handleCheckedValues = (currentValue: number) => {
+    if (currentValue === 0) return false;
+
+    return !!tagsSelected.find((tag) => tag === currentValue);
+  };
+
+  console.log("currentTagValue", tagsSelected);
 
   return (
     <form onSubmit={submitPost} className="flex flex-col w-1/3">
@@ -123,6 +156,7 @@ const PostForm = ({
       </div>
       <div className="flex flex-col gap-4 pb-6 pl-6">
         {!!tagsData &&
+          tagsData.length > 0 &&
           tagsData.map((tag) => (
             <div className="flex flex-row gap-2 py-2 " key={tag.id}>
               <input
@@ -134,6 +168,8 @@ const PostForm = ({
                 className="text-black w-6 h-6 rounded-md"
                 id={`tag-${tag.id}`}
                 value={tag.id}
+                onChange={(e) => handleTagsChange(e.target.value)}
+                checked={handleCheckedValues(tag.id ? tag.id : 0)}
                 // defaultChecked={
                 //   isUpdate ? postData?.published : refPublished.current?.checked
                 // }

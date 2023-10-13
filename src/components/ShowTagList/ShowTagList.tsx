@@ -40,10 +40,13 @@ export default function ShowTagList({ tagData }: { tagData: Array<tagProps> }) {
   return (
     <ul className="w-4/5">
       {!!currentData &&
-        currentData.map((tag) => (
+        currentData.length > 0 &&
+        currentData.map((tag, index) => (
           <li
             key={tag.id}
-            className="flex flex-row justify-between py-6 w-full"
+            className={`flex flex-row justify-between items-center p-6 w-full ${
+              index % 2 ? "bg-neutral-900" : ""
+            }`}
           >
             <span>{tag.tagName}</span>
             <div className="pl-4 flex flex-row gap-2">
