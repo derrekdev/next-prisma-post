@@ -35,7 +35,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // console.log("post test", post, post.tagIds);
+    console.log("post test", post, post.tagIds);
+
+    const currentTags = post.tagIds &&
+      post.tagIds.length > 0 && {
+        create: [
+          post.tagIds.map((tag) => {
+            return {
+              tagId: tag,
+            };
+          }),
+        ],
+      };
 
     const data = await prisma.post.create({
       data: {
@@ -47,6 +58,19 @@ export async function POST(req: NextRequest) {
             id: post.authorId,
           },
         },
+        // tags: { ...currentTags },
+        // tags: {
+        //   connect: {
+        //     id: post.tagIds,
+        //   },
+        // },
+        // tags: {
+        //   create: [
+        //     {
+        //       tagId: post?.tagIds[0]
+        //     }
+        //   ]
+        // }
       },
     });
 
