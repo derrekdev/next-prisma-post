@@ -1,13 +1,15 @@
 "use client";
 
-import { postProps, tagProps } from "@/Types/types";
+import { authorProps, postProps, tagProps } from "@/Types/types";
 import { useRef, useState } from "react";
 
 const PostForm = ({
   tagsData,
   postData,
+  authorData,
 }: {
   tagsData: tagProps[];
+  authorData: authorProps[];
   postData?: postProps;
 }) => {
   const isUpdate = !!postData ? true : false;
@@ -16,33 +18,34 @@ const PostForm = ({
   const refMessage = useRef<HTMLTextAreaElement | null>(null);
   const refPublished = useRef<HTMLInputElement | null>(null);
   const refTags = useRef<HTMLInputElement | null>(null);
+  const refAuthor = useRef<HTMLSelectElement | null>(null);
 
   async function submitPost(e: React.FormEvent) {
     e.preventDefault();
 
-    console.log("test", refTags);
+    const data = !isUpdate
+      ? await fetch("/api/post", {
+          method: "POST",
+          body: JSON.stringify({
+            title: refTitle.current?.value,
+            content: refMessage.current?.value,
+            published: refPublished.current?.checked,
+            authorId: parseInt(refAuthor.current?.value!),
+          }),
+        })
+      : await fetch(`/api/post/${postData?.id}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            title: refTitle.current?.value,
+            content: refMessage.current?.value,
+            published: refPublished.current?.checked,
+            authorId: refAuthor.current?.value,
+          }),
+        });
 
-    // const data = !isUpdate
-    //   ? await fetch("/api/post", {
-    //       method: "POST",
-    //       body: JSON.stringify({
-    //         title: refTitle.current?.value,
-    //         content: refMessage.current?.value,
-    //         published: refPublished.current?.checked,
-    //       }),
-    //     })
-    //   : await fetch(`/api/post/${postData?.id}`, {
-    //       method: "PUT",
-    //       body: JSON.stringify({
-    //         title: refTitle.current?.value,
-    //         content: refMessage.current?.value,
-    //         published: refPublished.current?.checked,
-    //       }),
-    //     });
-
-    // const res = await data.json();
-    // if (!res) console.log(res);
-    // else setMessage(`Successfuly ${isUpdate ? "updated" : "added"}`);
+    const res = await data.json();
+    if (!res.ok) console.log(res);
+    else setMessage(`Successfuly ${isUpdate ? "updated" : "added"}`);
   }
 
   return (
@@ -95,6 +98,25 @@ const PostForm = ({
         <label htmlFor="published" className="">
           Published
         </label>
+      </div>
+      <div className="flex flex-row gap-4 pb-6">
+        <label htmlFor="author" className="">
+          Author
+        </label>
+        <select
+          id="author"
+          className="w-full text-black"
+          ref={refAuthor}
+          defaultValue={refAuthor.current?.value ? refAuthor.current.value : ""}
+        >
+          {authorData &&
+            authorData.length > 0 &&
+            authorData.map((author) => (
+              <option key={author.id} value={author.id}>
+                {author.name}
+              </option>
+            ))}
+        </select>
       </div>
       <div className="flex flex-row border-t-4 py-4 border-white">
         <h2>Tags</h2>

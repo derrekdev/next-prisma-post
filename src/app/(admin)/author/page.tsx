@@ -19,7 +19,7 @@ export default async function page() {
 
   return (
     <div>
-      <h1>Author</h1>
+      <h1 className="text-4xl pb-20">Author</h1>
       <ShowAuthorList authorData={data} />
     </div>
   );

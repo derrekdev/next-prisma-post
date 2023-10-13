@@ -33,6 +33,13 @@ export async function PUT(
         title: post.title,
         content: post?.content,
         published: post?.published,
+        // authorId: post?.authorId,
+        // Author: {
+        //   connect: {
+        //     id: post?.authorId,
+        //   },
+        // },
+        // authorId: post?.authorId,
       },
       where: {
         id: postId,

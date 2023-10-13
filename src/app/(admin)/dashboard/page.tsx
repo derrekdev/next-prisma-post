@@ -1,3 +1,4 @@
+import { postProps } from "@/Types/types";
 import ShowPost from "@/components/ShowPostList/ShowPostList";
 
 async function getPost() {
@@ -14,7 +15,7 @@ async function getPost() {
 }
 
 export default async function page() {
-  const data: { id: number; title: string }[] = await getPost();
+  const data: postProps[] = await getPost();
 
   // const cookieStore = cookies();
 

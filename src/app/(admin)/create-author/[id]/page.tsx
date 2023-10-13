@@ -16,7 +16,7 @@ export default async function page({ params }: { params: { id: string } }) {
   const data = await getAuthor(params.id);
   return (
     <div>
-      <h1>Create Author</h1>
+      <h1 className="text-4xl pb-20">Create Author</h1>
       <AuthorForm authorData={data} />
     </div>
   );

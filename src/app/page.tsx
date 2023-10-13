@@ -1,8 +1,9 @@
+import { postProps } from "@/Types/types";
 import ShowPost from "@/components/ShowPostList/ShowPostList";
 
 async function getPost() {
   const res = await fetch(`${process.env.BASE_URL}/api/posts`, {
-    cache: "no-store",
+    // cache: "no-store",
     next: { revalidate: 5 },
   });
 
@@ -21,7 +22,9 @@ async function getPost() {
 //   data: { id: number; title: string }[];
 // }) {
 export default async function Home() {
-  const data: { id: number; title: string }[] = await getPost();
+  const data: Partial<postProps>[] = await getPost();
+
+  console.log("data", data);
 
   return (
     <main>

@@ -1,6 +1,6 @@
 "use client";
 
-import { postProps } from "@/Types/types";
+import { authorProps, postProps } from "@/Types/types";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -41,7 +41,7 @@ const ShowPostList = ({
   data,
   isAdmin = false,
 }: {
-  data: Array<Partial<postProps>>;
+  data: Array<Partial<postProps & authorProps>>;
   isAdmin?: boolean;
 }) => {
   const [currentData, setCurrentData] = useState(data);
@@ -71,10 +71,11 @@ const ShowPostList = ({
         currentData?.map((post) => (
           <li
             key={post.id}
-            className="flex flex-row justify-between py-6 w-full"
+            className="flex flex-row justify-between items-center py-6 w-full"
           >
             <Link href={`/post/${post.id}`}>
               <h2 className="text-lg ">{post.title}</h2>
+              <p className="text-xs">by: {post.Author?.name}</p>
             </Link>
             {isAdmin && (
               <div className="pl-4 flex flex-row gap-2">

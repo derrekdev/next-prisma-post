@@ -7,6 +7,9 @@ export async function GET(req: NextRequest) {
       where: {
         published: true,
       },
+      include: {
+        Author: true,
+      },
       orderBy: [
         {
           id: "asc",

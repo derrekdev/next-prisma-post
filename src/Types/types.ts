@@ -3,6 +3,8 @@ export type postProps = {
   title: string;
   content?: string;
   published: boolean;
+  authorId?: number;
+  Author?: authorProps;
 };
 
 export type tagProps = {
